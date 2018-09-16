@@ -19,16 +19,6 @@
         session_start();
     }
 
-    # PHP POUR CREER UN UTILISATEUR
-    if(isset($_POST["pseudoCreation"]) && $_POST["pseudoCreation"] != "" 
-        && isset($_POST["passwordCreation"]) && $_POST["passwordCreation"] != "")
-    {
-        $insertUtilisateur = $bdd->prepare("INSERT INTO utilisateurs(pseudo, password) 
-                                VALUES(:pseudo, :password)");
-        $insertUtilisateur->execute(array("pseudo" => $_POST["pseudoCreation"], 
-                                "password" => $_POST["passwordCreation"]));
-    }
-
     # PHP SE CONNECTER A UN UTILISATEUR
     if(isset($_POST["pseudoConnexion"]) && isset($_POST["passwordConnexion"]))
     {
@@ -50,16 +40,6 @@
         }
     }
 
-    # PHP POUR ECRIRE UN MESSAGE 
-    if(isset($_POST["message"]) && isset($_SESSION["data"]))
-    {
-        
-        $insertMessage = $bdd->prepare("INSERT INTO utilisateurs_messages(utilisateur_id,message)
-                                        VALUES(:id, :message)");
-        $insertMessage->execute(array("id" => $_SESSION["data"]["id"],
-                                    "message" => $_POST["message"]));
-    }
-
     # PHP POUR CAPTURER L'ENSEMBLE DES MESSAGES
     $selectMessage = $bdd->query("SELECT message, date, pseudo, image FROM utilisateurs_messages 
                                 INNER JOIN utilisateurs ON utilisateurs.id = utilisateurs_messages.utilisateur_id 
@@ -79,8 +59,8 @@
             
             <form method="post" action="index.php">
                 <p>CONNEXION :<br>
-                Pseudo : <input type="text" name="pseudoConnexion" id="pseudoConnexion"><br>
-                Password : <input type="text" name="passwordConnexion" id="passwordConnexion"><br>
+                Pseudo : <input type="text" name="pseudoConnexion" id="pseudoConnexion" value=<?php echo $_COOKIE["pseudo"]; ?>><br>
+                Password : <input type="password" name="passwordConnexion" id="passwordConnexion"><br>
                 <input type="submit" value="Connexion"></p>
             </form>
         
@@ -98,10 +78,10 @@
         } 
         ?>
 
-        <form method="post" action="index.php">
+        <form method="post" action="sql_save_request.php">
             <p>CREATION :<br>
             Pseudo : <input type="text" name="pseudoCreation" id="pseudoCreation"><br>
-            Password : <input type="text" name="passwordCreation" id="passwordCreation"><br> 
+            Password : <input type="password" name="passwordCreation" id="passwordCreation"><br> 
             <input type="submit" value="Creer compte"></p>
         </form>
 
@@ -120,7 +100,7 @@
 
     <?php if(isset($_SESSION["data"])) { ?>
 
-        <form method="post" action="index.php">
+        <form method="post" action="sql_save_request.php">
             <input type="textarea" name="message" id="message"> 
             <input type="submit" value="Envoyer">
         </form>
