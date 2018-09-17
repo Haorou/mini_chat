@@ -43,8 +43,14 @@
     # PHP POUR CAPTURER L'ENSEMBLE DES MESSAGES
     $selectMessage = $bdd->prepare("SELECT message, date, pseudo, image FROM utilisateurs_messages 
                                 INNER JOIN utilisateurs ON utilisateurs.id = utilisateurs_messages.utilisateur_id 
-                                ORDER BY date DESC LIMIT :start, 5");
-    $selectMessage->execute(array(["start"]=> $_SESSION["start"]));
+                                ORDER BY date DESC LIMIT 5 OFFSET :start");
+
+    if(!isset($_SESSION["start"]))
+        $_SESSION["start"] = 0;
+
+    $selectMessage->bindValue('start', $_SESSION["start"], PDO::PARAM_INT);
+    $selectMessage->execute();        
+
 ?>
 
 <!DOCTYPE html>
@@ -100,14 +106,20 @@
     
     <?php } $selectMessage->closeCursor(); ?>
 
-    <?php if(isset($_SESSION["data"])) { ?>
+    <?php if(isset($_SESSION["data"])) 
+        { ?>
 
         <form method="post" action="sql_save_request.php">
             <input type="textarea" name="message" id="message"> 
             <input type="submit" value="Envoyer">
         </form>
  
-        <?php } ?>
+  <?php } ?>
+
+
+        <form method="post" action="index.php"> 
+            <input type="submit" value="Rafraichir">
+        </form>
 
         <form method="post" action="index.php"> 
             <input type="submit" value="Rafraichir">
