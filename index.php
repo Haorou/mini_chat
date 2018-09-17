@@ -41,10 +41,10 @@
     }
 
     # PHP POUR CAPTURER L'ENSEMBLE DES MESSAGES
-    $selectMessage = $bdd->query("SELECT message, date, pseudo, image FROM utilisateurs_messages 
+    $selectMessage = $bdd->prepare("SELECT message, date, pseudo, image FROM utilisateurs_messages 
                                 INNER JOIN utilisateurs ON utilisateurs.id = utilisateurs_messages.utilisateur_id 
-                                ORDER BY date DESC LIMIT 5");
-
+                                ORDER BY date DESC LIMIT :start, 5");
+    $selectMessage->execute(array(["start"]=> $_SESSION["start"]));
 ?>
 
 <!DOCTYPE html>
@@ -108,6 +108,10 @@
         </form>
  
         <?php } ?>
+
+        <form method="post" action="index.php"> 
+            <input type="submit" value="Rafraichir">
+        </form>
 
 
     </body>
