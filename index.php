@@ -19,6 +19,20 @@
         session_start();
     }
 
+    if(isset($_POST["before"]) && $_SESSION["start"] > 0 )
+    {
+        $_SESSION["start"] -= 5;
+    }
+
+    $countMessage = $bdd->prepare("SELECT * FROM utilisateurs_messages");
+    $countMessage->execute();
+    $countMessage = $countMessage->rowCount();
+
+    if(isset($_POST["after"]) && $_SESSION["start"] < $countMessage)
+    {
+        $_SESSION["start"] += 5;
+    }
+
     # PHP SE CONNECTER A UN UTILISATEUR
     if(isset($_POST["pseudoConnexion"]) && isset($_POST["passwordConnexion"]))
     {
@@ -117,9 +131,19 @@
   <?php } ?>
 
 
+        <?php if($_SESSION["start"] !=0) { ?>
         <form method="post" action="index.php"> 
-            <input type="submit" value="Rafraichir">
+            <input type="submit" value="Page précente" name="before">
         </form>
+        <?php } ?>
+
+
+        <?php if($_SESSION["start"] < $countMessage) { ?>
+        <form method="post" action="index.php"> 
+            <input type="submit" value="Page suivante" name="after">
+        </form>
+        <?php } ?>
+
 
         <form method="post" action="index.php"> 
             <input type="submit" value="Rafraichir">
