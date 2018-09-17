@@ -1,7 +1,6 @@
 <?php
-    
+    session_start();
     try
-
     {
         $bdd = new PDO ("mysql:host=localhost;dbname=chat;charset=utf8","root","",
                          array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
@@ -11,9 +10,17 @@
             die('Erreur : '.$e->getMessage());
     }
 
+    function issetAndNotEmpty($variableToCheck)
+    {
+        $issetAndNotEmpty = False;
+        if(isset($variableToCheck) && $variableToCheck != "")
+            $issetAndNotEmpty = True;
+
+        return $issetAndNotEmpty;
+    }
+    
     # PHP POUR CREER UN UTILISATEUR
-    if(isset($_POST["pseudoCreation"]) && $_POST["pseudoCreation"] != "" 
-        && isset($_POST["passwordCreation"]) && $_POST["passwordCreation"] != "")
+    if(issetAndNotEmpty($_POST["pseudoCreation"]) && issetAndNotEmpty($_POST["passwordCreation"]))
     {
         $insertUtilisateur = $bdd->prepare("INSERT INTO utilisateurs(pseudo, password) 
                                 VALUES(:pseudo, :password)");
@@ -22,7 +29,7 @@
     }
 
     # PHP POUR ECRIRE UN MESSAGE 
-    if(isset($_POST["message"]) && isset($_SESSION["data"]))
+    if(issetAndNotEmpty($_POST["message"]) && isset($_SESSION["data"]))
     {
         
         $insertMessage = $bdd->prepare("INSERT INTO utilisateurs_messages(utilisateur_id,message)

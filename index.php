@@ -33,7 +33,7 @@
             if($row)
             {
                 $_SESSION["data"] = $row;
-                setcookie('pseudo', $_SESSION["data"]["pseudo"], time() + 365*24*3600, null, null, false, true);
+                setcookie('pseudoChat', $_SESSION["data"]["pseudo"], time() + 365*24*3600, null, null, false, true);
             }
 
             $selectUtilisateur->closeCursor();
@@ -59,8 +59,10 @@
             
             <form method="post" action="index.php">
                 <p>CONNEXION :<br>
-                Pseudo : <input type="text" name="pseudoConnexion" id="pseudoConnexion" value=<?php echo $_COOKIE["pseudo"]; ?>><br>
-                Password : <input type="password" name="passwordConnexion" id="passwordConnexion"><br>
+                Pseudo : <input type="text" name="pseudoConnexion" id="pseudoConnexion" 
+                value=<?php if(isset($_COOKIE["pseudoChat"])) {echo $_COOKIE["pseudoChat"];}
+                else { echo "";} ?>><br>
+                Password : <input type="password" name="passwordConnexion" id="passwordConnexion" value = ""><br>
                 <input type="submit" value="Connexion"></p>
             </form>
         
@@ -80,8 +82,8 @@
 
         <form method="post" action="sql_save_request.php">
             <p>CREATION :<br>
-            Pseudo : <input type="text" name="pseudoCreation" id="pseudoCreation"><br>
-            Password : <input type="password" name="passwordCreation" id="passwordCreation"><br> 
+            Pseudo : <input type="text" name="pseudoCreation" id="pseudoCreation" value=""><br>
+            Password : <input type="password" name="passwordCreation" id="passwordCreation" value=""><br> 
             <input type="submit" value="Creer compte"></p>
         </form>
 
@@ -109,6 +111,4 @@
 
 
     </body>
-
-
 </html>
