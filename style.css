@@ -1,0 +1,46 @@
+body
+{
+    text-align: center; 
+}
+
+#conteneur_utilisateur
+{
+    background-color:cornflowerblue;
+    border-radius: 5px;
+    display:flex;
+    justify-content: space-around;
+}
+
+.element_utilisateur
+{
+    text-align: center;
+}
+
+#conteneur_message
+{
+    display:flex;
+    justify-content: space-between;
+    background-color: beige;
+}
+
+.element_message:nth-child(1)
+{
+    flex:1;
+    text-align: center;
+}
+
+.element_message:nth-child(2)
+{
+    flex:4;
+}
+
+#poster_message
+{
+    display: inline-block;
+}
+
+#pages
+{
+    display:flex;
+    justify-content: center;
+}
