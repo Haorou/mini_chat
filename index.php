@@ -121,6 +121,7 @@
                     <div class="element_message">
                         <?php echo htmlspecialchars($dataMessage["pseudo"]) ?><br/>
                         <?php echo htmlspecialchars($dataMessage["date"])?>
+                        <img href=<?php echo htmlspecialchars($dataMessage["image"])?>/><br/>
                     </div>
                     <div class="element_message">
                         <p><?php echo htmlspecialchars($dataMessage["message"])?></p>
