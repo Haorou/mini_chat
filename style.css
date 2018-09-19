@@ -31,7 +31,9 @@ body
 
 .element_message:nth-child(2)
 {
+    margin-left:60px;
     flex:4;
+    text-align:left;
 }
 
 #poster_message

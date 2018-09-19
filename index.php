@@ -55,7 +55,8 @@
     }
 
     # PHP POUR CAPTURER L'ENSEMBLE DES MESSAGES
-    $selectMessage = $bdd->prepare("SELECT message, date, pseudo, image FROM utilisateurs_messages 
+    $bdd->query("SET lc_time_names = 'fr_FR' ");
+    $selectMessage = $bdd->prepare("SELECT message, DATE_FORMAT(date, 'le %d %M %Y à %H:%i:%s') AS date, pseudo, image FROM utilisateurs_messages 
                                 INNER JOIN utilisateurs ON utilisateurs.id = utilisateurs_messages.utilisateur_id 
                                 ORDER BY date DESC LIMIT 5 OFFSET :start");
 
@@ -119,10 +120,10 @@
                 <div id="conteneur_message">
                     <div class="element_message">
                         <?php echo htmlspecialchars($dataMessage["pseudo"]) ?><br/>
-                        <img href=<?php echo htmlspecialchars($dataMessage["image"])?> />
+                        <?php echo htmlspecialchars($dataMessage["date"])?>
                     </div>
                     <div class="element_message">
-                        <p><?php echo htmlspecialchars($dataMessage["message"]) ?></p>
+                        <p><?php echo htmlspecialchars($dataMessage["message"])?></p>
                     </div>
                 </div>
             
@@ -148,7 +149,7 @@
         </div>
 
         <div class="element_pages">
-            <?php if($_SESSION["start"] < $countMessage) { ?>
+            <?php if(($_SESSION["start"] + 5) < $countMessage) { ?>
             <form method="post" action="index.php"> 
                 <input type="submit" value="Page suivante" name="after">
             </form>
